@@ -88,4 +88,8 @@ public class Game {
         Main.counterSpeed = Main.defaultSpeed;
         System.out.println("LOSE");
     }
+
+    public void painter(Graphics g){
+        
+    }
 }

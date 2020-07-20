@@ -40,7 +40,7 @@ public class Main extends JPanel implements ActionListener {
 	public static Drawer apple = new Drawer(100, 100, 20, 20);
 
 	public void paintComponent(Graphics g) {
-		apple.rect(g, Color.red, true);
+		Main.apple.rect(g, Color.red, true);
 		String score = "SCORE: " + new Integer(Main.snakeLen - 1);
 
 		if (Main.isOUT) {
