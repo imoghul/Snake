@@ -17,7 +17,7 @@ public class Snake {
     private Point apple;
     private Shape appleShape = new Shape(0,0, Values.blockSize, Values.blockSize, 0, 0, 0, "rect normal", Values.timerSpeed);
     private Random r = new Random();
-
+    private boolean growFlag = false;
     public Values.Directions currDirection;
 
     public Snake(int displayW, int displayH) {
@@ -55,9 +55,14 @@ public class Snake {
 
     public void update() {
         if(this.currDirection != Values.Directions.NONE) {
+            Point tail = (Point)snakeList.get(snakeList.size()-1).clone();
             for(int i = snakeList.size() - 1; i > 0; --i) {
                 snakeList.get(i).x = snakeList.get(i - 1).x;
                 snakeList.get(i).y = snakeList.get(i - 1).y;
+            }
+            if(this.growFlag){
+                snakeList.add(tail);
+                this.growFlag = false;
             }
         }
 
@@ -94,7 +99,7 @@ public class Snake {
                     if(p.x == x && p.y == y) isIn = true;
                 }
 
-                boardDrawing[y][x].draw(g, !isIn ? Color.WHITE : Values.backgroundColor, true);
+                boardDrawing[y][x].draw(g, isIn ? Color.WHITE : Values.backgroundColor, true);
             }
         }
     }
@@ -106,13 +111,28 @@ public class Snake {
         return this.apple;
     }
 
-    public void run(Graphics g){
+    public boolean run(Graphics g){
 
         this.update();
         this.drawSnake(g);
         this.drawApple(g);
 
-        if(this.isInSnake(this.getApplePoint()))this.replaceApple();
+        if(this.isInSnake(this.getApplePoint())){
+            this.replaceApple();
+            this.grow();
+        }
+        return !this.getFail();
+    }
 
+    public void grow(){
+        this.growFlag = true;
+    }
+
+    public boolean getFail(){
+        Point head = (Point)this.snakeList.get(0).clone();
+        for(int i = 1;i<this.snakeList.size();++i){
+            if(this.snakeList.get(0).equals(this.snakeList.get(i))) return true;
+        }
+        return head.x<0 || head.y<0 || head.y>=this.boardH || head.x>=this.boardW;
     }
 }
