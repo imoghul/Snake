@@ -33,7 +33,7 @@ public class Main extends JPanel implements ActionListener {
         JTextField textField = new JTextField();
         textField.addKeyListener(new KeyListen());
         Main.window.add(textField);
-        Main.window.setBounds(0, 0, Values.blockGap+(Values.blockGap+Values.blockSize)*Values.gridW,Values.blockGap+(Values.blockGap+Values.blockSize)*Values.gridH +25);//Values.displayW, Values.displayH);
+        Main.window.setBounds(0, 0, Values.blockGap+(Values.blockGap+Values.blockSize)*Values.gridW,Values.blockGap+(Values.blockGap+Values.blockSize)*Values.gridH +35);//Values.displayW, Values.displayH);
         Main.c.add(panel);
         Main.window.setVisible(true);
         Main.window.setResizable(false);

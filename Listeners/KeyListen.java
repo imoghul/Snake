@@ -3,7 +3,6 @@ import java.awt.event.*;
 
 import Features.Values;
 
-import java.awt.*;
 
 public class KeyListen extends KeyAdapter {
 

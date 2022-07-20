@@ -13,12 +13,16 @@ import Graphics.Shape;
 public class Snake {
     private int boardW, boardH;
     private ArrayList<Point> snakeList;
+    private ArrayList<Point> lastSnakeList;
     private Shape[][] boardDrawing;
     private Point apple;
     private Shape appleShape = new Shape(0,0, Values.blockSize, Values.blockSize, 0, 0, 0, "rect normal", Values.timerSpeed);
     private Random r = new Random();
-    private boolean growFlag = false;
     public Values.Directions currDirection;
+    public int speed;
+    public int speedCounter = 0;
+    public int applesEaten = 0;
+    public final int speedDecrement = 25;
 
     public Snake(int displayW, int displayH) {
         this.boardW = displayW;//(displayW - Values.blockGap) / (Values.blockSize + Values.blockGap);
@@ -33,6 +37,7 @@ public class Snake {
             }
         }
 
+        this.speed = 100;
         
         Point startPoint = new Point(r.nextInt(this.boardW), r.nextInt(this.boardH));
         snakeList.add(startPoint);
@@ -54,15 +59,11 @@ public class Snake {
     }
 
     public void update() {
+        this.lastSnakeList = this.getSnakeListClone();
         if(this.currDirection != Values.Directions.NONE) {
-            Point tail = (Point)snakeList.get(snakeList.size()-1).clone();
             for(int i = snakeList.size() - 1; i > 0; --i) {
                 snakeList.get(i).x = snakeList.get(i - 1).x;
                 snakeList.get(i).y = snakeList.get(i - 1).y;
-            }
-            if(this.growFlag){
-                snakeList.add(tail);
-                this.growFlag = false;
             }
         }
 
@@ -89,6 +90,13 @@ public class Snake {
 
     }
 
+    public ArrayList<Point> getSnakeListClone(){
+        ArrayList<Point> clone = new ArrayList<Point>();
+        for(Point p:this.snakeList)
+            clone.add(new Point(p.x,p.y));
+        return clone;
+    }
+
 
     public void drawSnake(Graphics g) {
         for(int y = 0; y < boardDrawing.length; ++y) {
@@ -111,7 +119,13 @@ public class Snake {
         return this.apple;
     }
 
-    public boolean run(Graphics g){
+    /*
+     * Return:
+     *  2 if apple eaten
+     *  1 if nothing happened
+     *  0 if failed
+     */
+    public int run(Graphics g){
 
         this.update();
         this.drawSnake(g);
@@ -120,12 +134,25 @@ public class Snake {
         if(this.isInSnake(this.getApplePoint())){
             this.replaceApple();
             this.grow();
+            this.speedCounter++;
+            this.applesEaten++;
+            return 2;
         }
-        return !this.getFail();
+        if(this.getFail()){
+            this.speedCounter = 0;
+            return 0;
+        }
+        else {
+            if(this.speedCounter%5==0 && this.speedCounter!=0 && this.speed-speedDecrement>0){
+                this.speedCounter = 0;
+                this.speed-=speedDecrement;
+            }
+            return 1;
+        }
     }
 
     public void grow(){
-        this.growFlag = true;
+        this.snakeList.add(this.lastSnakeList.get(this.lastSnakeList.size()-1));
     }
 
     public boolean getFail(){

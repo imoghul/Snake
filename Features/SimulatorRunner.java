@@ -6,17 +6,17 @@ import java.util.concurrent.TimeUnit;
 import Elements.Snake;
 
 import java.awt.Graphics;
-import java.sql.Time;
-import java.util.concurrent.TimeUnit;
 
 public class SimulatorRunner {
-
     public static void run(Graphics g) {
-        if(!Values.snake.run(g))
+        int success = Values.snake.run(g);
+        if(success==0){
             Values.snake = new Snake(Values.gridW, Values.gridH);
+        }
+        
 
         try {
-            TimeUnit.MILLISECONDS.sleep(Values.snake.currDirection==Values.Directions.NONE?0:Values.gameSpeed);
+            TimeUnit.MILLISECONDS.sleep(Values.snake.currDirection==Values.Directions.NONE?0:Values.snake.speed);
         } catch(Exception e) {
 
         }

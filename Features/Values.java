@@ -1,27 +1,7 @@
 package Features;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JToolBar;
-
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.awt.event.ActionEvent;
 import java.awt.Component;
-import java.awt.Point;
-import java.awt.Image;
-import javax.swing.*;
-import java.awt.image.*;
-import javax.imageio.*;
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.io.*;
-
-import java.awt.geom.AffineTransform;
 
 import Graphics.Mouse;
 import Elements.Snake;
@@ -33,7 +13,6 @@ public class Values {
     public static int blockSize = 20;
     public static int blockGap = 1;
     public static Snake snake;
-    public static int gameSpeed = 100;
     public static int gridW = 25;
     public static int gridH = 25;
     //
